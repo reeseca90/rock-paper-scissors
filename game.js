@@ -1,38 +1,42 @@
-let playerselection = '';
 let computerSelection = computerPlay();
 let result = '';
 let playerScore = 0;
 let computerScore = 0;
 
-// console.log(playerSelection);
-// console.log(computerSelection);
+// creates onclick functions for each button
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => button.addEventListener('click', function(e) {
+    game(e.target.id); // get id from HTML for button clicked
+}));
 
-function game() {
+const playerScoreDisplay = document.querySelector('#playerScore');
+const computerScoreDisplay = document.querySelector('#computerScore');
+const winnerDisplay = document.querySelector('#roundWinner');
+const gameWinnerDisplay = document.querySelector('#gameWinner');
+
+function game(playerSelection) { // playerSelection passed from e.target.id for button onclick
+    gameWinnerDisplay.textContent = ""; // reset gameWinnerDisplay each new round
+
     computerSelection = computerPlay();
-    playerSelection = prompt('Enter "rock", "paper", or "scissors"', 'rock').toUpperCase();
-
-    // console.log(computerSelection);
-    // console.log(playerSelection);
 
     playRound(playerSelection, computerSelection);
 
-    console.log(result);
+    playerScoreDisplay.textContent = "Player Score: " + playerScore;
+    computerScoreDisplay.textContent = "Computer Score: " + computerScore;
+    winnerDisplay.textContent = result;
 
     if (playerScore === 5) {
-        console.log("You've won five games!");
+        gameWinnerDisplay.textContent = "You've won five games! Make a selection to play again."
         resetScore();
     }
 
     if (computerScore === 5) {
-        console.log("You've lost five games!");
+        gameWinnerDisplay.textContent = "You've lost five games! Make a selection to play again."
         resetScore();
     }
 }
 
 function playRound(playerSelection, computerSelection) {
-
-    // console.log(playerSelection);
-
     if (playerSelection === 'ROCK') {
 
         if (computerSelection === 'ROCK') {
@@ -57,7 +61,7 @@ function playRound(playerSelection, computerSelection) {
             computerScore++;
         }
 
-    } else {
+    } else { // if player didn't pick ROCK or PAPER, they picked SCISSORS
 
         if (computerSelection === 'ROCK') {
             result = 'You lose! Rock beats Scissors!';
